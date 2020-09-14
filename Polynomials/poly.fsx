@@ -35,17 +35,23 @@ let rec mulX a =
 
 mulX [ 2; 0; 0; 1 ]
 
-let reduce f list =
-    match list with
-    | head :: tail -> List.fold f head tail
-    | [] -> failwith "The list was empty!"
+let rec mul a b =
+    match a, b with
+    | [], [] -> []
+    | [], b -> b
+    | a, [] -> a
+    | a :: atail, b :: btail -> (a * b + mul atail btail ) :: (mul atail btail)
+
+mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ] 
 
 // virker eval???
 
-let rec eval x p =
-    match x, p with
-    | _, [] -> 1
-    | x, p :: tail -> (pown x p) + eval x tail
+// let rec eval x p =
+//     match p with
+//     | [] -> 0
+//     | p :: tail ->
+//         (pown x (tail.GetReverseIndex () -1))
+//         + eval x tail
 
 // eval 2 [ 2; 3; 0; 1 ] // 16
 
