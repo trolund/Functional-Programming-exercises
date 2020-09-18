@@ -1,5 +1,6 @@
 type Poly = int list
 
+// Part 1: Recursive list functions
 
 let rec add a b =
     match a, b with
@@ -40,19 +41,25 @@ let rec mul a b =
     | [], [] -> []
     | [], b -> b
     | a, [] -> a
-    | a :: atail, b :: btail -> (a * b + mul atail btail ) :: (mul atail btail)
+    | a :: atail, b :: btail -> (a * b + mul atail btail) :: (mul atail btail)
 
-mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ] 
+mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ]
 
 // virker eval???
-
 // let rec eval x p =
 //     match p with
 //     | [] -> 0
 //     | p :: tail ->
 //         (pown x (tail.GetReverseIndex () -1))
 //         + eval x tail
-
 // eval 2 [ 2; 3; 0; 1 ] // 16
-
 // eval 2 [ 0; 1; 0; 1 ] // 11
+
+
+
+// Part 2: functional decomposition
+
+let rec toString p: int list =
+    match p with
+    | [] -> []
+    | p :: tail -> (sprintf "%i" + p) + toString tail
