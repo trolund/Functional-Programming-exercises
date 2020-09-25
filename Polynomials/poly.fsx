@@ -36,15 +36,7 @@ let rec mulX a =
 
 mulX [ 2; 0; 0; 1 ]
 
-// let rec mul a b =
-//     match a, b with
-//     | [], [] -> []
-//     | [], b -> b
-//     | a, [] -> a
-//     | a :: atail, b :: btail -> (a * b + mul atail btail) :: (mul atail btail)
-
-// mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ]
-
+// Something is wrong!
 let rec mul x y =
     match x, y with
     | [], [] -> []
@@ -52,8 +44,8 @@ let rec mul x y =
     | [], b -> b
     | a :: atail, q -> add (mulC a q) (mulX (mul atail q))
 
-mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ]
-mul [ 2; 3; 1 ] [ 1; 2; 3 ]
+// mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ]
+mul [ 2; 3; 0; 1 ] [ 1; 2; 3 ]
 
 let eval x poly =
 
@@ -67,8 +59,19 @@ let eval x poly =
     cal x poly 1
 
 eval 2 [ 2; 3; 0; 1 ]
+
 // Part 2: functional decomposition
 // let rec toString p: int list =
 //     match p with
 //     | [] -> []
 //     | p :: tail -> (sprintf "%i" + p) + toString tail
+
+let rec isLegal poly =
+    match poly with
+    | [] -> true
+    | [ x ] when x = 0 -> false
+    | [ x ] -> true
+    | head :: tail -> isLegal tail
+
+isLegal [ 2; 3; 0; 1; 0 ]
+isLegal [ 2; 3; 0; 1 ]
