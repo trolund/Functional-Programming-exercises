@@ -60,7 +60,8 @@ let eval x poly =
 
 eval 2 [ 2; 3; 0; 1 ]
 
-// Part 2: functional decomposition
+// Part 2: Functional decomposition
+
 // let rec toString p: int list =
 //     match p with
 //     | [] -> []
@@ -69,9 +70,30 @@ eval 2 [ 2; 3; 0; 1 ]
 let rec isLegal poly =
     match poly with
     | [] -> true
-    | [ x ] when x = 0 -> false
-    | [ x ] -> true
-    | head :: tail -> isLegal tail
+    | [ x ] when x = 0 -> false // | [ 0 ] -> [] ?? could simplify it.
+    | [ _ ] -> true
+    | _ :: tail -> isLegal tail
 
 isLegal [ 2; 3; 0; 1; 0 ]
 isLegal [ 2; 3; 0; 1 ]
+
+let rec sum poly =
+
+    let rec reduceSum (acc: int, poly: int list) =
+        match acc, poly with
+        | _, [] -> 0
+        | _, head :: tail -> acc + head + reduceSum (acc, tail)
+
+    reduceSum (0, poly)
+
+sum [ 2; 3; 0; 1; 0; 0; 0 ]
+
+let rec prune poly =
+    match poly with
+    | [] -> []
+    | [ 0 ] -> []
+    | head :: tail when sum tail = 0 -> [ head ]
+    | head :: tail -> head :: prune tail
+
+prune [ 2; 3; 0; 1; 0 ]
+prune [ 2; 3; 0; 1; 0; 0; 0 ]
