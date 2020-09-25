@@ -93,7 +93,31 @@ let rec prune poly =
 prune [ 2; 3; 0; 1; 0 ]
 
 prune [ 2; 3; 0; 1; 0; 0; 0 ]
-// let rec toString p: int list =
-//     match p with
-//     | [] -> []
-//     | p :: tail -> (sprintf "%i" + p) + toString tail
+
+let rec toString p =
+
+    let rec reduce p i =
+        match (p, i) with
+        | [], _ -> ""
+        | head :: tail, _ when head = 0 -> reduce tail (i + 1)
+        | head :: tail, i when i = 1 ->
+            match i with
+            | x when x = 0 -> "" + reduce tail (i + 1)
+            | x when x > 0 -> string head + "x" + reduce tail (i + 1)
+            | x when x < 0 -> "-" + string head + "x" + reduce tail (i + 1)
+        | head :: tail, _ when head < 0 ->
+            string head
+            + "x^"
+            + string i
+            + reduce tail (i + 1)
+        | head :: tail, _ ->
+            "+"
+            + string head
+            + "x^"
+            + string i
+            + reduce tail (i + 1)
+
+    reduce (prune p) 1
+
+toString [ 2; 3; 0; 1; 0 ]
+toString [ 2; -3; 0; 1; 0 ]
