@@ -45,13 +45,22 @@ let rec mul a b =
 
 mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ]
 
-// virker eval???
-// let rec eval x p =
-//     match p with
-//     | [] -> 0
-//     | p :: tail ->
-//         (pown x (tail.GetReverseIndex () -1))
-//         + eval x tail
+let rec pow x exp = int (float (x) ** float (exp))
+
+let rec evalGen x p i =
+    match p with
+    | [] -> 0
+    | exp :: tail -> (exp * pow x i + evalGen x tail (i + 1))
+
+let eval x poly = evalGen x poly 1
+
+eval 2 [ 2; 3; 0; 1 ]
+
+pow 5 2
+
+let rec fact x = if x < 1 then 1 else x * fact (x - 1)
+
+
 // eval 2 [ 2; 3; 0; 1 ] // 16
 // eval 2 [ 0; 1; 0; 1 ] // 11
 
