@@ -62,11 +62,6 @@ eval 2 [ 2; 3; 0; 1 ]
 
 // Part 2: Functional decomposition
 
-// let rec toString p: int list =
-//     match p with
-//     | [] -> []
-//     | p :: tail -> (sprintf "%i" + p) + toString tail
-
 let rec isLegal poly =
     match poly with
     | [] -> true
@@ -96,4 +91,9 @@ let rec prune poly =
     | head :: tail -> head :: prune tail
 
 prune [ 2; 3; 0; 1; 0 ]
+
 prune [ 2; 3; 0; 1; 0; 0; 0 ]
+// let rec toString p: int list =
+//     match p with
+//     | [] -> []
+//     | p :: tail -> (sprintf "%i" + p) + toString tail
