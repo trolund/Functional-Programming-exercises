@@ -100,16 +100,18 @@ let rec toString p =
         | head :: tail, i when i = 0 -> string head + reduce tail (i + 1)
         | head :: tail, i when i = 1 ->
             match head with
-            | x when x >= 0 -> "+" + string head + "x" + reduce tail (i + 1)
+            | x when x = 0 -> reduce tail (i + 1)
+            | x when x = 1 -> "+" + "x" + reduce tail (i + 1)
             | x when x = -1 -> "-" + "x" + reduce tail (i + 1)
-            | _ ->  string head + "x" + reduce tail (i + 1)
+            | x when x > 0 -> "+" + string head + "x" + reduce tail (i + 1)
+            | _ ->  string head + "x" + reduce tail (i + 1) // minus
         | head :: tail, _ ->
             match head with 
-            | head when head = 0 -> reduce tail (i + 1)
-            | head when head = 1 -> "+" + "x^" + string i + reduce tail (i + 1)
-            | head when head = -1 -> "-" + "x^" + string i + reduce tail (i + 1)
-            | head when head > 0 -> "+" + string head + "x^" + string i + reduce tail (i + 1)
-            | head -> string head + "x^" + string i + reduce tail (i + 1)
+            | x when x = 0 -> reduce tail (i + 1)
+            | x when x = 1 -> "+" + "x^" + string i + reduce tail (i + 1)
+            | x when x = -1 -> "-" + "x^" + string i + reduce tail (i + 1)
+            | x when x > 0 -> "+" + string head + "x^" + string i + reduce tail (i + 1)
+            | _ -> string head + "x^" + string i + reduce tail (i + 1) // minus
 
     reduce (prune p) 0
 
@@ -118,6 +120,7 @@ toString [ 2; -3; 0; 1; 0 ]
 toString [ -2; 3; 0; 1; 0 ]
 toString [ 2; -3; 0; -1; 3 ]
 toString [ -1; -1; -1; -1 ]
+toString [ 1; 1; 1; 1 ]
 
 
 //  | head :: tail, _ when head < 0 ->
