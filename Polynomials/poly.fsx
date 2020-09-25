@@ -45,16 +45,34 @@ let rec mul a b =
 
 mul [ 2; 0; 0; 1 ] [ 2; 0; 0; 1 ]
 
-let rec pow x exp = int (float (x) ** float (exp))
+// let rec evalGen x p i =
+//     match p with
+//     | [] -> 0
+//     | exp :: tail -> (exp * pow x i + evalGen x tail (i + 1))
 
-let rec evalGen x p i =
-    match p with
-    | [] -> 0
-    | exp :: tail -> (exp * pow x i + evalGen x tail (i + 1))
+// let eval x poly = evalGen x poly 1
 
-let eval x poly = evalGen x poly 1
+
+let eval x poly =
+
+    let rec pow x exp = int (float (x) ** float (exp))
+
+    let rec evalGen x p i =
+        match p with
+        | [] -> 0
+        | exp :: tail -> (exp * pow x i + evalGen x tail (i + 1))
+
+    evalGen x poly 1
 
 eval 2 [ 2; 3; 0; 1 ]
+
+let addThreeNumbers x y z =
+
+    //create a nested helper function
+    let add n = fun x -> x + n
+
+    // use the helper function
+    x |> add y |> add z
 
 pow 5 2
 
