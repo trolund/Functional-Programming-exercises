@@ -72,7 +72,7 @@ let rec isLegal poly =
 isLegal [ 2; 3; 0; 1; 0 ]
 isLegal [ 2; 3; 0; 1 ]
 
-let rec sum poly =
+let sum poly =
 
     let rec reduceSum (acc: int, poly: int list) =
         match acc, poly with
@@ -93,27 +93,32 @@ let rec prune poly =
 prune [ 2; 3; 0; 1; 0 ]
 prune [ 2; 3; 0; 1; 0; 0; 0 ]
 
-let rec toString p =
-    let rec reduce p i =
+let toString p =
+    let rec aux p i =
         match (p, i) with
         | [], _ -> ""
-        | head :: tail, i when i = 0 -> string head + reduce tail (i + 1)
+        | head :: tail, i when i = 0 -> string head + aux tail (i + 1)
         | head :: tail, i when i = 1 ->
             match head with
-            | x when x = 0 -> reduce tail (i + 1)
-            | x when x = 1 -> "+" + "x" + reduce tail (i + 1)
-            | x when x = -1 -> "-" + "x" + reduce tail (i + 1)
-            | x when x > 0 -> "+" + string head + "x" + reduce tail (i + 1)
-            | _ ->  string head + "x" + reduce tail (i + 1) // minus
+            | x when x = 0 -> aux tail (i + 1)
+            | x when x = 1 -> "+" + "x" + aux tail (i + 1)
+            | x when x = -1 -> "-" + "x" + aux tail (i + 1)
+            | x when x > 0 -> "+" + string head + "x" + aux tail (i + 1)
+            | _ -> string head + "x" + aux tail (i + 1) // minus
         | head :: tail, _ ->
-            match head with 
-            | x when x = 0 -> reduce tail (i + 1)
-            | x when x = 1 -> "+" + "x^" + string i + reduce tail (i + 1)
-            | x when x = -1 -> "-" + "x^" + string i + reduce tail (i + 1)
-            | x when x > 0 -> "+" + string head + "x^" + string i + reduce tail (i + 1)
-            | _ -> string head + "x^" + string i + reduce tail (i + 1) // minus
+            match head with
+            | x when x = 0 -> aux tail (i + 1)
+            | x when x = 1 -> "+" + "x^" + string i + aux tail (i + 1)
+            | x when x = -1 -> "-" + "x^" + string i + aux tail (i + 1)
+            | x when x > 0 ->
+                "+"
+                + string head
+                + "x^"
+                + string i
+                + aux tail (i + 1)
+            | _ -> string head + "x^" + string i + aux tail (i + 1) // minus
 
-    reduce (prune p) 0
+    aux (prune p) 0
 
 toString [ 2; 3; 0; 1; 0 ]
 toString [ 2; -3; 0; 1; 0 ]
@@ -121,18 +126,22 @@ toString [ -2; 3; 0; 1; 0 ]
 toString [ 2; -3; 0; -1; 3 ]
 toString [ -1; -1; -1; -1 ]
 toString [ 1; 1; 1; 1 ]
+toString [ 0; 1; 1; 1 ] // denne case kunne forbedres således at 0+ ikke optræder først
 
+let rec derivative poly =
 
-//  | head :: tail, _ when head < 0 ->
-//             string head
-//             + "x^"
-//             + string i
-//             + reduce tail (i + 1)
-//         | head :: tail, _ ->
-//             "+"
-//             + string head
-//             + "x^"
-//             + string i
-//             + reduce tail (i + 1)
+    let rec aux p i =
+        match p, i with
+        | [], _ -> []
+        | _ :: tail, i when i = 0 -> 0 :: aux tail (i + 1) // k = 0
+        | head :: tail, i when i = 1 ->
+            match head with
+            | x when x = 1 -> 1 :: aux tail (i + 1)
+            | x -> aux tail (i + 1)
+        // head :: aux tail (i + 1) // x = 1
+        | head :: tail, i -> i * head :: aux tail (i + 1)
 
-let rec derivative poly = 
+    aux (prune poly) 0
+
+toString [ 1; 1; 1; 1 ]
+toString (derivative [ 1; 1; 1; 1 ])
