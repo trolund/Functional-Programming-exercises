@@ -9,7 +9,12 @@ List.fold (fun acc x -> x :: acc) [] [ 1; 2; 3; 4; 5 ]
 let testList = [ 1; 2; 3; 4; 5 ]
 
 let folder state value =
-    if value % 2 = 0 then state + value else state
+    if value % 2 = 0 then
+        printf "%i \n" (value)
+        state + value
+    else
+        printf "%i \n" value
+        state
 
 let initState = 0
 
