@@ -1,3 +1,5 @@
+open FsCheck
+
 type Poly = int list
 
 // Part 1: Recursive list functions
