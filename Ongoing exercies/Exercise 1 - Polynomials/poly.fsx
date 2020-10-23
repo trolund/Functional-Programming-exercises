@@ -4,15 +4,16 @@ module Polynomials =
 
     // Part 1: Recursive list functions
 
-    let rec add a b =
-        match a, b with
-        | [], [] -> []
-        | [], b -> b
-        | a, [] -> a
-        | a :: atail, b :: btail -> (a + b) :: (add atail btail)
+    let rec simpleOpsAux a b op = 
+         match a, b with
+            | [], [] -> []
+            | [], b -> b
+            | a, [] -> a
+            | a :: atail, b :: btail -> op a b :: (simpleOpsAux atail btail op)
+
+    let add a b = simpleOpsAux a b (( + ))
 
     add [ 1; 2 ] [ 3; 4; 5; 6 ]
-
 
     let rec mulC c xs =
         match c, xs with
@@ -22,12 +23,7 @@ module Polynomials =
 
     mulC 2 [ 2; 0; 0; 1 ]
 
-    let rec sub a b =
-        match a, b with
-        | [], [] -> []
-        | [], b -> b
-        | a, [] -> a
-        | a :: atail, b :: btail -> (a - b) :: (sub atail btail)
+    let sub a b = simpleOpsAux a b (( - ))
 
     sub [ 1; 2 ] [ 3; 4; 5; 6 ]
 
