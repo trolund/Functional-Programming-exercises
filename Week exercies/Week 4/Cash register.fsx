@@ -26,13 +26,13 @@ let rec findArticle ac = function
     | _::reg -> findArticle ac reg 
     |_ -> failwith(ac + " is an unknown article code");;
 
-let rec tryFindArticle ac = 
-        let p item = item = ac
-        let aux = 
-                    match List.tryFind p reg with
-                        | Some value -> value
-                        | None -> failwith(ac + " is an unknown article code")
-                aux
+// let rec tryFindArticle ac = 
+//         let p item = item = ac
+//         let aux = 
+//                     match List.tryFind p reg with
+//                         | Some value -> value
+//                         | None -> failwith(ac + " is an unknown article code")
+//                 aux
         
 // tryFindArticle "a1" reglist
 
