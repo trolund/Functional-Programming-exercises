@@ -1,5 +1,3 @@
-// open FsCheck
-
 module Polynomials = 
 
     type Poly = int list
