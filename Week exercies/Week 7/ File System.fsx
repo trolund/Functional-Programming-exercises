@@ -41,13 +41,41 @@ Declare mutually recursive functions:
 
 let rec longNameFileSys =
     function
-    | [] -> Set.empty
+    | [] -> Set.empty<string>
+    | e :: es -> Set.union (longNameElement e) (longNameFileSys es)
+and longNameElement =
+    function
+    | File (n, ex) -> Set.ofList [n + "." + ex ]
+    | Dir (d, fs) -> prependDirectory (d, longNameFileSys fs) 
+and prependDirectory (dir: string, fs) =
+    if Set.isEmpty fs then Set.singleton "" 
+    else 
+        let col = Set.minElement fs
+        let f = Set.remove col fs
+        Set.union (Set.ofList [dir + "/"]) (prependDirectory (dir, f))
+
+longNameElement d1
+
+
+(*
+     let col = Set.minElement cols
+let cols’ = Set.remove col cols
+if canBeExtBy m col c
+then Set.add (Set.add c col) cols’
+else Set.add col (extColoring m cols’ c);;
+*)
+
+let rec longNameFileSys =
+    function
+    | [] -> []
     | e :: es -> (longNameElement e) @ (longNameFileSys es)
+
 and longNameElement  =
     function
-    | File (n, ex) ->  [{ n + "." + ex }]
+    | File (n, ex) ->  [ n + "." + ex ]
     | Dir (d, fs) -> prependDirectory d (longNameFileSys fs)
+
 and prependDirectory dir =
     function
-    | [] -> Set.empty
+    | [] -> []
     | e::es -> (dir + "/" + e) :: prependDirectory dir es

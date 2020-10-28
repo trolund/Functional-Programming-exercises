@@ -71,7 +71,6 @@ module Polynomials =
     isLegal [ 2; 3; 0; 1 ]
 
     let sum poly =
-
         let rec reduceSum (acc: int, poly: int list) =
             match acc, poly with
             | _, [] -> 0
@@ -127,7 +126,6 @@ module Polynomials =
     toString [ 0; 1; 1; 1 ] // denne case kunne forbedres således at 0+ ikke optræder først
 
     let rec derivative poly =
-
         let rec aux p i =
             match p, i with
             | [], _ -> []
