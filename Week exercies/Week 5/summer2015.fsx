@@ -7,6 +7,10 @@ type CourseDesc = Title * ECTS
 
 type CourseBase = Map<CourseNo, CourseDesc>
 
+type Mandatory = Set<CourseNo>
+type Optional = Set<CourseNo>
+type CourseGroup = Mandatory * Optional
+
 (* 
     1. Declare a function isValidCourseDesc: CourseDesc -> bool,
     where isValidCourseDesc desc is true if the ECTS part of desc is valid 
@@ -33,7 +37,24 @@ let invalidCourseBase: CourseBase = Map.ofList [02157, fp; 02158, ("An other cou
 *)
 
 let isValidCourseBase (courseBase: CourseBase) = 
-    courseBase |> Map.forall(fun _ desc -> isValidCourseDesc desc)
+    Map.forall(fun _ desc -> isValidCourseDesc desc) courseBase
 
 isValidCourseBase validCourseBase
 isValidCourseBase invalidCourseBase
+
+(*
+    3. Declare a function disjoint: Set<’a> -> Set<’a> -> bool, where disjoint s1 s2
+    is true if the two sets s1 and s2 have no common element, that is, they are disjoint.
+*)
+
+let op: Optional = Set.ofList [02157; 02158]
+let ma: Mandatory = Set.ofList [02141; 02131]
+
+let disjoint s1 s2 = 
+    let count = (Set.count s1) + (Set.count s2)
+    let accCount = (Set.union s1 s2).Count
+    count = accCount
+
+disjoint op ma
+disjoint op op
+disjoint ma ma
