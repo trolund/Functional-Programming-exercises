@@ -51,15 +51,18 @@ let rec B b s =
     | Neg(x) -> not x
     | Con(x, y) -> x && y
 
+
+let mapJoin (p:Map<'a,'b>) (q:Map<'a,'b>) = 
+    Map(Seq.concat [ (Map.toSeq p) ; (Map.toSeq q) ])
+
 (* I: Stm -> State -> State                          *)
 let rec I stm s =
     match stm with 
     | Ass(x,a)         -> update x (a) s
     | Skip             -> s
-    | Seq(stm1, stm2)  -> 
-    | ITE(b,stm1,stm2) -> 
-    | While(b, stm)    -> 
-
+    | Seq(stm1, stm2)  -> mapJoin (I stm1 s) (I stm2 s)
+    | ITE(b,stm1,stm2) -> if B b s then I stm1 s else I stm2 s
+    | While(b, stm)    -> if B b s then I stm s else s
 
 (* Factorial computation 
 {pre: x = K and x>=0} 
