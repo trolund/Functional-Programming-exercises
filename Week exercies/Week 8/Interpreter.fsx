@@ -15,8 +15,8 @@ type BExp =                          (* boolean expressions      *)
           | FF                       (* false                    *)
           | Eq of AExp * AExp        (* equality                 *)
           | Lt of AExp * AExp        (* less than                *)
-          | Neg of bool              (* negation                 *)
-          | Con of bool * bool       (* conjunction              *)
+          | Neg of BExp              (* negation                 *)
+          | Con of BExp * BExp       (* conjunction              *)
 
 type Stm  =                            (* statements             *)
           | Ass of string * AExp       (* assignment             *)
@@ -48,8 +48,8 @@ let rec B b s =
     | FF          -> false
     | Eq(x,y) -> x = y
     | Lt(x, y) -> x < y
-    | Neg(x) -> not x
-    | Con(x, y) -> x && y
+    | Neg(x) -> not (B x s)
+    | Con(x, y) -> B x s && B y s
 
 
 let mapJoin (p:Map<'a,'b>) (q:Map<'a,'b>) = 
@@ -75,11 +75,8 @@ let fac = Seq(Ass("y", N 1),
                     Seq(Ass("y", Mul(V "x", V "y")) , Ass("x", Sub(V "x", N 1)) ))
              );;
 
-
-
-
 (* Define an initial state                           *)
-let s0 = Map.ofList [("x",4)];;
+let s0 = Map.ofList [("x", N 4)];;
 
 (* Interpret the program                             *)
 let s1 = I fac s0;;
