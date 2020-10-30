@@ -123,4 +123,20 @@ let isValidCourseGroup (cg: CourseGroup, cb: CourseBase) =
     the elective courses.
 *)
 
-// let isValid fm cb = 
+let ep = function
+    | 02157 | 02158 -> true
+    | _ -> false
+
+ep 02157
+ep 02154
+
+
+let isValid fm cb = 
+    let (basicNaturalScience, technologicalCore, projectProfessionalSkill, elective) = fm
+    let allGroupsValid = isValidCourseGroup basicNaturalScience 
+                      && isValidCourseGroup technologicalCore 
+                      && isValidCourseGroup projectProfessionalSkill 
+                      && isValidCourseGroup elective
+    
+    
+

@@ -39,22 +39,22 @@ Declare mutually recursive functions:
     longNamesElement: Element -> Set<string>
 *)
 
-let rec longNameFileSys =
-    function
-    | [] -> Set.empty<string>
-    | e :: es -> Set.union (longNameElement e) (longNameFileSys es)
-and longNameElement =
-    function
-    | File (n, ex) -> Set.ofList [n + "." + ex ]
-    | Dir (d, fs) -> prependDirectory (d, longNameFileSys fs) 
-and prependDirectory (dir: string, fs) =
-    if Set.isEmpty fs then Set.singleton "" 
-    else 
-        let col = Set.minElement fs
-        let f = Set.remove col fs
-        Set.union (Set.ofList [dir + "/"]) (prependDirectory (dir, f))
+// let rec longNameFileSys =
+//     function
+//     | [] -> Set.empty
+//     | e :: es -> Set.union (longNameElement e) (longNameFileSys es)
+// and longNameElement =
+//     function
+//     | File (n, ex) -> Set.ofList [n + "." + ex ]
+//     | Dir (d, fs) -> prependDirectory (d, longNameFileSys fs) 
+// and prependDirectory (dir: string, fs) =
+//     if Set.isEmpty fs then Set.singleton "" 
+//     else 
+//         let col = Set.minElement fs
+//         let f = Set.remove col fs
+//         Set.union (Set.ofList [dir + "/"]) (prependDirectory (dir, f))
 
-longNameElement d1
+// longNameElement d1
 
 
 (*
@@ -65,17 +65,16 @@ then Set.add (Set.add c col) cols’
 else Set.add col (extColoring m cols’ c);;
 *)
 
-let rec longNameFileSys =
+let rec longNameFileSysList =
     function
-    | [] -> []
-    | e :: es -> (longNameElement e) @ (longNameFileSys es)
+    | [] -> Set.empty
+    | e :: es -> Set.union (longNameElementList e) (longNameFileSysList es)
 
-and longNameElement  =
+and longNameElementList =
     function
-    | File (n, ex) ->  [ n + "." + ex ]
-    | Dir (d, fs) -> prependDirectory d (longNameFileSys fs)
+    | File (n, ex) -> Set.singleton (n + "." + ex)
+    | Dir (d, fs) -> Set.foldBack (prependDirectory d) (longNameFileSysList fs) Set.empty
 
-and prependDirectory dir =
-    function
-    | [] -> []
-    | e::es -> (dir + "/" + e) :: prependDirectory dir es
+and prependDirectory = fun dir name dSet -> Set.union dSet (Set.singleton (dir + "/" + name))
+
+longNameElementList d1
