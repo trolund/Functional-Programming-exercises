@@ -190,5 +190,10 @@ module Polynomials =
     deg [ -5 ]
     deg []
 
+    let addD d1 d2 =    
+        match (d1, d2) with 
+        | _, MinusInf -> MinusInf
+        | MinusInf, _  -> MinusInf
+        | Fin(x), Fin(y) -> Fin(x + y)
 
-
+    addD (Fin(7)) (Fin(8))
