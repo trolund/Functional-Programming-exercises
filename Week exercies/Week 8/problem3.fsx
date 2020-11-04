@@ -90,3 +90,27 @@ let mainSource r =
 
 mainSource rev
 mainSource rev3
+
+(*
+    // TODO
+    6. Declare a function tryInsert : Name → River → River → River option. The value
+    of tryInsert n t r is Some r'
+    if n is the name of a river in r and r'
+    is obtained from r
+    by adding t as a tributary of n. The value of tryInsert n t r is None if n is not a name
+    occurring in r.
+*)
+
+
+
+// let rec insert (n: Name) (t: River) (r: River) = 
+    
+//     let rec subTotal = function 
+//         | [] -> None
+//         | e::es -> Some((totalFlow e) :: (subTotal es))
+//     and totalFlow = function
+//         | R(name,flow, tri) -> Some((name,flow, tri) :: (subTotal tri))
+
+//     totalFlow r
+
+// insert "R2" rev3 rev

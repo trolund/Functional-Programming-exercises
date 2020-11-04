@@ -1,6 +1,33 @@
 module Polynomials = 
 
+    (* types *)
+    (* types part 1 *)
+
     type Poly = int list
+
+    (* types part 4 *)
+
+    // type MinusInf = int
+    // type Fin = int
+    type Degree = 
+        | MinusInf
+        | Fin of int    
+    (*
+    let p1 = ofList [1; 2];;
+    // val p1 : Polynomial.Poly = 1 + 2x
+    let p2 = ofList [3;4;5];;
+    // val p2 : Poly = 3 + 4x + 5x^2
+    let p3 = ofList [0;0;0;0;2];;
+    // val p3 : Poly = 2x^4
+    let p4 = p1 + p2*p3;;
+    // val p4 : Poly = 1 + 2x + 6x^4 + 8x^5 + 10x^6
+    let p5 = compose p4 p3;;
+    // val p5 : Poly = 1 + 4x^4 + 96x^16 + 256x^20 + 640x^24
+    let p6 = derivative p5;;
+    // val p6 : Poly = 16x^3 + 1536x^15 + 5120x^19 + 15360x^23
+    let d = max (deg p4) (deg p6);;
+    // val d : Degree = Fin 23 
+    *)
 
     // Part 1: Recursive list functions
 
@@ -34,7 +61,7 @@ module Polynomials =
 
     mulX [ 2; 0; 0; 1 ]
 
-    // Something is wrong!
+    // TODO Something is wrong!
     let rec mul x y =
         match x, y with
         | [], [] -> []
@@ -46,7 +73,6 @@ module Polynomials =
     mul [ 2; 3; 0; 1 ] [ 1; 2; 3 ]
 
     let eval x poly =
-
         let rec pow x exp = int (float (x) ** float (exp))
 
         let rec cal x p i =
@@ -141,3 +167,28 @@ module Polynomials =
 
     toString [ 1; 1; 1; 1 ]
     toString (derivative [ 1; 1; 1; 1 ])
+
+(*
+    TODO
+    The function compose: Poly -> Poly -> Poly
+*)
+
+    // let rec compose (p1:Poly) (p2: Poly) = 
+    //     match p1, p2 with 
+    //     | [], y::ytail -> y
+    //     | x::xtail, y::ytail -> x * y + compose xtail ytail
+
+    let deg = function
+        | [] -> MinusInf
+        | x::tail when x <= 0 && tail.IsEmpty -> MinusInf
+        | _::tail when tail.IsEmpty -> (Fin 0)
+        | x::tail -> Fin((List.fold (fun x acc -> acc + 1 ) 0 (x::tail)) + 1)
+
+    deg [ 2; 0; 0; 1 ]
+    deg [ 0 ]
+    deg [ 5 ]
+    deg [ -5 ]
+    deg []
+
+
+
