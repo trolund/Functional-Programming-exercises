@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "9g0Nej9QnpvvSZi3zDQdTufMwRCYke+4fWS0wOq+jGrWwjqcQcElyw3MhWqyx0gsC+FRWx7JIXFfl4Qjr79Vlw==",
+  "success": true,
+  "projectFilePath": "/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/Polynomials.fsproj",
+  "expectedPackageFiles": [
+    "/Users/troelslund/.nuget/packages/fscheck/2.14.3/fscheck.2.14.3.nupkg.sha512",
+    "/Users/troelslund/.nuget/packages/fsharp.core/4.7.2/fsharp.core.4.7.2.nupkg.sha512",
+    "/Users/troelslund/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/troelslund/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

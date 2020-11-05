@@ -1,0 +1,8 @@
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/bin/Debug/netstandard2.0/Polynomials.deps.json
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/obj/Debug/netstandard2.0/Polynomials.AssemblyInfoInputs.cache
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/obj/Debug/netstandard2.0/Polynomials.AssemblyInfo.fs
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/bin/Debug/netstandard2.0/Polynomials.dll
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/bin/Debug/netstandard2.0/Polynomials.pdb
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/obj/Debug/netstandard2.0/Polynomials.fsprojAssemblyReference.cache
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/obj/Debug/netstandard2.0/Polynomials.dll
+/Users/troelslund/Documents/Code workspaces/F#/Functional-Programming-exercises/Ongoing exercies/Exercise 1 - Polynomials/Polynomials/obj/Debug/netstandard2.0/Polynomials.pdb
