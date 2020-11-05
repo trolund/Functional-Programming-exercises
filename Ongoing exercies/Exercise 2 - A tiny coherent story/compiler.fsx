@@ -6,7 +6,7 @@ module Compiler =
                        | ABS 
                        | PUSH of int
 
-    type Stack = int list
+    type Stack = S of int list
 
     let theStack = [1;2;3;4;5]
 
@@ -24,13 +24,20 @@ module Compiler =
 
 // let rec sum p xs = List.fold (fun x acc -> if p x then x + acc else acc ) 0 xs
 
-    let ADD (s: Stack) = List.fold aux2 [] s
+    let add s = S(List.fold aux2 [] s)
     
-    
-    let rec SIGN (s: int list) = function
-        | [] -> []
-        | [x]  -> -x::s
-        | head::tail -> SIGN tail
+    let intpInstr s (i:Instruction) =
+        match i with 
+        | ADD -> add s
+        | SUB -> S([0])
+        | SIGN -> S([0])
+        | ABS -> S([0])
+        | PUSH(i) -> S([0])
+     
+    // let rec SIGN (s: int list) = function
+    //     | [] -> []
+    //     | [x]  -> -x::s
+    //     | head::tail -> SIGN tail
     
  
     // let add s = 

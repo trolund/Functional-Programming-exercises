@@ -1,47 +1,46 @@
 ﻿namespace Polynomials
 
-module Polynomials = 
+module Polynomials =
 
     (* types *)
     (* types part 1 *)
-
-    type Poly = int list
+    
+    type Poly = 
+        | P of int list
 
     (* types part 4 *)
 
     // type MinusInf = int
     // type Fin = int
-    type Degree = 
+    type Degree =
         | MinusInf
-        | Fin of int    
-    (*
-    let p1 = ofList [1; 2];;
-    // val p1 : Polynomial.Poly = 1 + 2x
-    let p2 = ofList [3;4;5];;
-    // val p2 : Poly = 3 + 4x + 5x^2
-    let p3 = ofList [0;0;0;0;2];;
-    // val p3 : Poly = 2x^4
-    let p4 = p1 + p2*p3;;
-    // val p4 : Poly = 1 + 2x + 6x^4 + 8x^5 + 10x^6
-    let p5 = compose p4 p3;;
-    // val p5 : Poly = 1 + 4x^4 + 96x^16 + 256x^20 + 640x^24
-    let p6 = derivative p5;;
-    // val p6 : Poly = 16x^3 + 1536x^15 + 5120x^19 + 15360x^23
-    let d = max (deg p4) (deg p6);;
-    // val d : Degree = Fin 23 
-    *)
+        | Fin of int
+
+    (* TODO Prefix Operators overload *)
+
+    // [<Sealed>]
+    // type vector =
+    // static member ( ˜- ) : vector -> vector
+    // static member ( + ) : vector * vector -> vector
+    // static member ( - ) : vector * vector -> vector
+    // static member ( * ) : float * vector -> vector
+    // static member ( * ) : vector * vector -> float
+    // val make : float * float -> vector
+    // val coord: vector -> float * float
+    // val norm : vector -> float
+
 
     // Part 1: Recursive list functions
 
-    let rec simpleOpsAux a b op = 
-         match a, b with
-            | [], [] -> []
-            | [], b -> b
-            | a, [] -> a
-            | a :: atail, b :: btail -> op a b :: (simpleOpsAux atail btail op)
+    let rec simpleOpsAux a b op =
+        match a, b with
+        | [], [] -> []
+        | [], b -> b
+        | a, [] -> a
+        | a :: atail, b :: btail -> op a b :: (simpleOpsAux atail btail op)
 
-    let add a b = simpleOpsAux a b (( + ))
-    
+    let add a b = simpleOpsAux a b ((+))
+
 
     let rec mulC c xs =
         match c, xs with
@@ -49,11 +48,11 @@ module Polynomials =
         | _, [] -> []
         | c, x :: tail -> (x * c) :: (mulC c tail)
 
-  
 
-    let sub a b = simpleOpsAux a b (( - ))
 
- 
+    let sub a b = simpleOpsAux a b ((-))
+
+
 
     let rec mulX a =
         match a with
@@ -70,7 +69,7 @@ module Polynomials =
         | a :: atail, q -> add (mulC a q) (mulX (mul atail q))
 
     let eval x poly =
-        let rec pow x exp = int (float (x) ** float (exp))
+        let pow x exp = int (float (x) ** float (exp))
 
         let rec cal x p i =
             match p with
@@ -146,27 +145,39 @@ module Polynomials =
 
         aux (prune poly) 0
 
-(*
+    (*
     TODO
     The function compose: Poly -> Poly -> Poly
 *)
 
-    // let rec compose (p1:Poly) (p2: Poly) = 
-    //     match p1, p2 with 
+    // let rec compose (p1:Poly) (p2: Poly) =
+    //     match p1, p2 with
     //     | [], y::ytail -> y
     //     | x::xtail, y::ytail -> x * y + compose xtail ytail
 
-    let deg = function
+    let deg =
+        function
         | [] -> MinusInf
-        | x::tail when x <= 0 && tail.IsEmpty -> MinusInf
-        | _::tail when tail.IsEmpty -> (Fin 0)
-        | x::tail -> Fin((List.fold (fun x acc -> acc + 1 ) 0 (x::tail)) + 1)
+        | x :: tail when x <= 0 && tail.IsEmpty -> MinusInf
+        | _ :: tail when tail.IsEmpty -> (Fin 0)
+        | x :: tail ->
+            Fin
+                ((List.fold (fun x acc -> acc + 1) 0 (x :: tail))
+                 + 1)
 
 
-    let addD d1 d2 =    
-        match (d1, d2) with 
+    let addD d1 d2 =
+        match (d1, d2) with
         | _, MinusInf -> MinusInf
-        | MinusInf, _  -> MinusInf
-        | Fin(x), Fin(y) -> Fin(x + y)
+        | MinusInf, _ -> MinusInf
+        | Fin (x), Fin (y) -> Fin(x + y)
 
-    
+  (* compose TODO https://www.youtube.com/watch?v=OOnKGqNyv50 *)
+
+(* 
+    Part 6: The library Polynomial
+*)
+
+    let ofList l = P l
+    let toList = function
+        | P(l) -> l
