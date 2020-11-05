@@ -13,11 +13,11 @@ module Compiler =
         TODO Part 2: Expressions: Syntax and semantics
     *)
 
-    type Exp =                      (* Arithmetical expressions *) 
-          | C  of int               (* numbers                  *)
-          | X of Exp                  (* variables                *)
-          | Add of Exp * Exp        (* addition                 *)
-          | Sub of Exp * Exp        (* subtraction              *)
+    type Exp =     
+          | X                         
+          | C  of int             
+          | Add of Exp * Exp        
+          | Sub of Exp * Exp       
           | Minus of Exp * Exp
           | Abs of Exp * Exp;;
 
