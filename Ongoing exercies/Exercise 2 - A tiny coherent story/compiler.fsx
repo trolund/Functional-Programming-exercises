@@ -5,11 +5,31 @@ module Compiler =
         | SUB
         | SIGN
         | ABS
-        | PUSH of int
+        | PUSH of int;;
 
-    type Stack = S of int list
+    type Stack = S of int list;;
 
-    let theStack = S([ 1; 2; 3; 4; 5 ])
+    (*
+        TODO Part 2: Expressions: Syntax and semantics
+    *)
+
+    type Exp =                      (* Arithmetical expressions *) 
+          | C  of int               (* numbers                  *)
+          | X of Exp                  (* variables                *)
+          | Add of Exp * Exp        (* addition                 *)
+          | Sub of Exp * Exp        (* subtraction              *)
+          | Minus of Exp * Exp
+          | Abs of Exp * Exp;;
+
+    X, C -2, C 7;;
+    Abs X, Minus(C 7);;
+    Add(Abs(Minus(C 7)), Sub(X, Minus(Add(C 2, X))));;
+
+    (*
+        Basic data contrucs for testing
+    *)
+
+    let theStack = S([ 1; 2; 3; 4; 5 ]);;
 
     let instru =
         [ PUSH 2
@@ -17,10 +37,9 @@ module Compiler =
           PUSH 8
           SUB
           ADD
-          SUB
           ABS
           SIGN
-          ABS ]
+          ABS ];;
 
     let instru2 =
         [ PUSH 2
@@ -28,12 +47,22 @@ module Compiler =
           PUSH 10
           ADD
           ADD
-          ABS ]
+          SIGN ];;
+    
+    let instruFail =
+        [ PUSH 2
+          PUSH 4
+          PUSH 10
+          ADD
+          ADD
+          ADD
+          ADD
+          SIGN ];;
 
-    let ofList l = S l
+    let ofList l = S l;;
     
     let toList = function
-        | S(l) -> l
+        | S(l) -> l;;
 
 
     let sigleEle s a =
@@ -43,32 +72,32 @@ module Compiler =
             let sec = tail.Head
             let restTail = tail.Tail
             let firstelm = a sec x
-            S(firstelm :: restTail)
+            S(firstelm :: restTail);;
 
-    let add s = sigleEle s (+)
-    let sub s = sigleEle s (-)
+    let add s = sigleEle s (+);;
+    let sub s = sigleEle s (/);;
 
-    add theStack
-    sub theStack
+    add theStack;;
+    sub theStack;;
 
     let first s a =
         match s with
         | S([]) -> S([])
-        | S(x :: tail) -> S((a x) :: tail)
+        | S(x :: tail) -> S((a x) :: tail);;
 
-    let sign s = first s ((~-))
+    let sign s = first s ((~-));;
 
-    let abs s = first s (abs)
+    let abs s = first s (abs);;
 
-    sign theStack
-    abs (S([ -1; 3; 4; 5 ]))
+    sign theStack;;
+    abs (S([ -1; 3; 4; 5 ]));;
 
     let push (r: int) (s: Stack) =
         let l = toList(s)
-        S(List.rev (List.append (List.rev l) [ r ]))
+        S(List.rev (List.append (List.rev l) [ r ]));;
 
-    push 8 theStack
-    push 5 (S([]))
+    push 8 theStack;;
+    push 5 (S([]));;
 
     let intpInstr (s: Stack) i =
         match i with
@@ -76,9 +105,9 @@ module Compiler =
         | SUB -> sub s
         | SIGN -> sign s
         | ABS -> abs s
-        | PUSH (x) -> push x s
+        | PUSH (x) -> push x s;;
 
-    intpInstr (S([])) (PUSH 8)
+    intpInstr (S([])) (PUSH 8);;
 
     (*
         A program for the stack machine is a list of instructions [i1, i2, . . . , in]. A program is executed
@@ -97,10 +126,11 @@ module Compiler =
         let rec aux (i: Instruction list) (s: Stack) = 
             match (i, s) with 
             | [], S([]) -> failwith "Sometinhg went wrong!"
-            | [],S(s) -> s.Head
+            | [],S(s) -> s.Head // check if int
             | ins::tail, s -> aux tail (intpInstr s ins)
 
-        aux i sStack
+        aux i sStack;;
 
-    exec instru
-    exec instru2
+    exec instru;; // 2
+    exec instru2;; // -16
+    exec instruFail;; // will fail
