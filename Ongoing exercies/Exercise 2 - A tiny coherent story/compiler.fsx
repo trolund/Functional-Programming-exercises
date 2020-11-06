@@ -14,7 +14,7 @@ module Compiler =
     *)
 
     type Exp =     
-          | X                      
+          | X of int                   
           | C  of int             
           | Add of Exp * Exp        
           | Sub of Exp * Exp       

@@ -1,4 +1,5 @@
 ﻿namespace Polynomials
+open Microsoft.FSharp.Core
 
 module Polynomials =
 
@@ -10,49 +11,37 @@ module Polynomials =
 
     (* types part 4 *)
 
-    // type MinusInf = int
-    // type Fin = int
     type Degree =
         | MinusInf
         | Fin of int
 
-    (* TODO Prefix Operators overload *)
+    (* 
+        Part 6: The library Polynomial
+    *)
 
-    // [<Sealed>]
-    // type vector =
-    // static member ( ˜- ) : vector -> vector
-    // static member ( + ) : vector * vector -> vector
-    // static member ( - ) : vector * vector -> vector
-    // static member ( * ) : float * vector -> vector
-    // static member ( * ) : vector * vector -> float
-    // val make : float * float -> vector
-    // val coord: vector -> float * float
-    // val norm : vector -> float
-
+    let ofList l = P l
+    let toList = function
+        | P(l) -> l
 
     // Part 1: Recursive list functions
 
     let rec simpleOpsAux a b op =
         match a, b with
-        | [], [] -> []
-        | [], b -> b
-        | a, [] -> a
-        | a :: atail, b :: btail -> op a b :: (simpleOpsAux atail btail op)
+        | P([]), P([]) -> []
+        | P([]), P(b') -> b'
+        | P(a'), P([]) -> a'
+        | P(a :: atail), P(b :: btail) -> op a b :: (simpleOpsAux (P(atail)) (P(btail)) op)
 
-    let add a b = simpleOpsAux a b ((+))
+    let add a b = P(simpleOpsAux a b ((+)))
 
 
     let rec mulC c xs =
         match c, xs with
         | c, _ when c = 0 -> xs
-        | _, [] -> []
-        | c, x :: tail -> (x * c) :: (mulC c tail)
+        | _, P([]) -> P([])
+        | c, P(x::tail) -> P((x * c) :: toList (mulC c (P(tail))))
 
-
-
-    let sub a b = simpleOpsAux a b ((-))
-
-
+    let sub a b = P(simpleOpsAux a b ((-)))
 
     let rec mulX a =
         match a with
@@ -60,13 +49,19 @@ module Polynomials =
         | a -> 0 :: a
 
 
+
     // TODO Something is wrong!
-    let rec mul x y =
-        match x, y with
-        | [], [] -> []
-        | a, [] -> a
-        | [], b -> b
-        | a :: atail, q -> add (mulC a q) (mulX (mul atail q))
+    let mul x y = x
+    // let mul x y = 
+    //     let rec mulaux x y =
+    //         match x, y with
+    //         | P([]), P([]) -> []
+    //         | P(a), P([]) -> a
+    //         | P([]), P(b) -> b
+    //         | P(a :: atail), q -> toList (add (mulC a q) (mulX (mulaux (P(atail)) q)))
+        
+    //     P(mulaux x y)
+
 
     let eval x poly =
         let pow x exp = int (float (x) ** float (exp))
@@ -104,6 +99,7 @@ module Polynomials =
 
 
     let toString p =
+        let list = toList p
         let rec aux p i =
             match (p, i) with
             | [], _ -> ""
@@ -128,8 +124,9 @@ module Polynomials =
                     + aux tail (i + 1)
                 | _ -> string head + "x^" + string i + aux tail (i + 1) // minus
 
-        aux (prune p) 0
+        aux (prune list) 0
 
+    let print p = printf "%s" (toString p) 
 
     let rec derivative poly =
         let rec aux p i =
@@ -148,7 +145,7 @@ module Polynomials =
     (*
     TODO
     The function compose: Poly -> Poly -> Poly
-*)
+    *)
 
     // let rec compose (p1:Poly) (p2: Poly) =
     //     match p1, p2 with
@@ -172,12 +169,20 @@ module Polynomials =
         | MinusInf, _ -> MinusInf
         | Fin (x), Fin (y) -> Fin(x + y)
 
-  (* compose TODO https://www.youtube.com/watch?v=OOnKGqNyv50 *)
+    (* 
+        compose TODO https://www.youtube.com/watch?v=OOnKGqNyv50 
+    *)
 
-(* 
-    Part 6: The library Polynomial
-*)
 
-    let ofList l = P l
-    let toList = function
-        | P(l) -> l
+    (* TODO Prefix Operators overload *)
+
+    type Poly with
+        static member ( + ) (a : Poly, b: Poly) = add a b
+        static member ( * ) (a : Poly, b: Poly) = mul a b
+        static member ( * ) (a : int, b: Poly) = mulC a b
+        static member ( - ) (a : Poly, b: Poly) = mul a b
+        member x.Print() = print x
+        member x.ToString() = toString x
+
+  
+  
