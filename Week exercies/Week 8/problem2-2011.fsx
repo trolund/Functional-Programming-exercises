@@ -27,8 +27,7 @@ let exp3: Exp = BinOp(BinOp(C(2), "*", C(3)), "+", C(3))
 
 let exp: Exp = BinOp(BinOp(C(5), "*", C(2)), "+", C(3))
 
-let rec toString = 
-    function
+let rec toString = function
     | C(x) -> string x
     | BinOp(e, s, ex) -> "(" + (toString e) + s + (toString ex) + ")"
  
