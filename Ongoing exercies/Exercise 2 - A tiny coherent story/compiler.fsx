@@ -161,3 +161,35 @@ let compile e x =
 
 let compiled = compile e3 2
 exec compiled
+
+(* TODO -> gennemgå optimeringer! ABS helt sikkert ikke rigtig *)
+
+let compileOptimized e x =
+    let rec auxCompile e (tempS: Instruction list) =
+        match e with
+        | X -> (PUSH x) :: tempS
+        | C (v) -> (PUSH v) :: tempS
+        | Add (a, b) -> match a, b with 
+                        | a, C 0 -> auxCompile a tempS
+                        | C 0, b -> auxCompile b tempS
+                        | C a', C b' -> (PUSH (a' + b')) :: tempS
+                        | a, b -> (auxCompile b tempS) @ (auxCompile a tempS) @ [ADD] 
+        | Sub (a, b) -> match a, b with 
+                        | a, C 0 -> auxCompile a tempS
+                        | C 0, b -> auxCompile (Minus b) tempS
+                        | C a', C b' -> (PUSH (a' - b')) :: tempS
+                        | a, b -> (auxCompile b tempS) @ (auxCompile a tempS) @ [SUB] 
+        | Minus (v) -> match v with 
+                        | C a' -> (PUSH (-a')) :: tempS
+                        | Minus e -> (auxCompile e tempS) @ tempS
+                        | a' -> (auxCompile a' tempS) @ [SIGN]
+        | Abs (v) -> match v with 
+                     | C a' -> (PUSH (abs a')) :: tempS
+                     | Minus a' -> auxCompile a' tempS @ [ABS]
+                     | Abs a' -> auxCompile a' tempS @ [ABS]
+                     | a' -> (auxCompile a' tempS) @ [ABS]
+
+    auxCompile e []
+
+let compileOptimizedres = compileOptimized e3 2
+exec compileOptimizedres
