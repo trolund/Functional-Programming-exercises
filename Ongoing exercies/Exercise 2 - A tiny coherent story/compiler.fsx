@@ -14,16 +14,18 @@ module Compiler =
     *)
 
     type Exp =     
-          | X of int                   
+          | X                  
           | C  of int             
           | Add of Exp * Exp        
           | Sub of Exp * Exp       
-          | Minus of Exp * Exp
-          | Abs of Exp * Exp;;
+          | Minus of Exp
+          | Abs of Exp;;
 
-    X, C -2, C 7;;
-    Abs X, Minus(C 7);;
-    Add(Abs(Minus(C 7)), Sub(X, Minus(Add(C 2, X))));;
+    let e1 = X
+    let e11 = C -2
+    let e12 = C 7
+    let e2 = Abs X, Minus(C 7);;
+    let e3 = Add(Abs(Minus(C 7)), Sub(X, Minus(Add(C 2, X))));;
 
     (*
         Basic data contrucs for testing
@@ -87,10 +89,10 @@ module Compiler =
 
     let sign s = first s ((~-));;
 
-    let abs s = first s (abs);;
+    let abs2 s = first s (abs);;
 
     sign theStack;;
-    abs (S([ -1; 3; 4; 5 ]));;
+    abs2 (S([ -1; 3; 4; 5 ]));;
 
     let push (r: int) (s: Stack) =
         let l = toList(s)
@@ -104,7 +106,7 @@ module Compiler =
         | ADD -> add s
         | SUB -> sub s
         | SIGN -> sign s
-        | ABS -> abs s
+        | ABS -> abs2 s
         | PUSH (x) -> push x s;;
 
     intpInstr (S([])) (PUSH 8);;
@@ -134,3 +136,18 @@ module Compiler =
     exec instru;; // 2
     exec instru2;; // -16
     exec instruFail;; // will fail
+
+    let rec sem e x = 
+        match e with 
+        | X -> x               
+        | C(v) -> v           
+        | Add(a,b) -> (sem a x) + (sem b x)
+        | Sub(a,b) -> (sem b x) / (sem a x) 
+        | Minus(v) -> -(sem v x)
+        | Abs(v) -> abs (sem v x)
+    
+    sem e1 2
+    sem e3 2
+
+
+        
