@@ -144,6 +144,7 @@ let rec sem e x =
 
 sem e1 2
 sem e3 2
+sem e3 -120
 
 // compile: Exp -> int -> Instruction list
 
@@ -192,4 +193,7 @@ let compileOptimized e x =
     auxCompile e []
 
 let compileOptimizedres = compileOptimized e3 2
+compileOptimizedres
 exec compileOptimizedres
+
+exec (compileOptimized e3 1)

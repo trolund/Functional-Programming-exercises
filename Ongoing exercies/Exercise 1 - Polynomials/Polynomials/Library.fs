@@ -45,23 +45,24 @@ module Polynomials =
 
     let rec mulX a =
         match a with
-        | [] -> []
-        | a -> 0 :: a
+        | P([]) -> P([])
+        | P(a) -> P(0 :: a)
 
 
 
     // TODO Something is wrong!
-    let mul x y = x
-    // let mul x y = 
-    //     let rec mulaux x y =
-    //         match x, y with
-    //         | P([]), P([]) -> []
-    //         | P(a), P([]) -> a
-    //         | P([]), P(b) -> b
-    //         | P(a :: atail), q -> toList (add (mulC a q) (mulX (mulaux (P(atail)) q)))
+    let mul x y = 
+        let rec mulaux x y =
+            match x, y with
+            | P([]), P([]) -> []
+            | P(a), P([]) -> a
+            | P([]), P(b) -> b
+            | P(a :: atail), q -> toList (add (mulC a q) (mulX (P(mulaux (P(atail)) q))))
         
-    //     P(mulaux x y)
 
+        P(mulaux x y)
+
+ // let mul (x:Poly) (y:Poly) = List.fold2 (fun a x y ) [] x y
 
     let eval x poly =
         let pow x exp = int (float (x) ** float (exp))
