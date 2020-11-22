@@ -1,3 +1,7 @@
+#I @"/Users/troelslund/.nuget/packages/fscheck/3.0.0-alpha4/lib/net452"
+#r @"FsCheck.dll"
+open FsCheck
+
 type Instruction =
     | ADD
     | SUB
