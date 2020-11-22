@@ -1,5 +1,5 @@
-#I @"/Users/troelslund/.nuget/packages/fscheck/3.0.0-alpha4/lib/net452"
-#r @"FsCheck.dll"
+#I "/Users/troelslund/.nuget/packages/fscheck/3.0.0-alpha4/lib/net452"
+#r "FsCheck.dll"
 open FsCheck
 
 type Instruction =
@@ -157,10 +157,16 @@ let compile e x =
         match e with
         | X -> (PUSH x) :: tempS
         | C (v) -> (PUSH v) :: tempS
-        | Add (a, b) -> (auxCompile b tempS) @ (auxCompile a tempS) @ [ADD] 
-        | Sub (a, b) -> (auxCompile b tempS) @ (auxCompile a tempS) @ [SUB] 
-        | Minus (v) -> (auxCompile v tempS) @ [SIGN]
-        | Abs (v) -> (auxCompile v tempS) @ [ABS]
+        | Add (a, b) ->
+            (auxCompile b tempS)
+            @ (auxCompile a tempS)
+            @ [ ADD ]
+        | Sub (a, b) ->
+            (auxCompile b tempS)
+            @ (auxCompile a tempS)
+            @ [ SUB ]
+        | Minus (v) -> (auxCompile v tempS) @ [ SIGN ]
+        | Abs (v) -> (auxCompile v tempS) @ [ ABS ]
 
     auxCompile e []
 
@@ -174,25 +180,35 @@ let compileOptimized e x =
         match e with
         | X -> (PUSH x) :: tempS
         | C (v) -> (PUSH v) :: tempS
-        | Add (a, b) -> match a, b with 
-                        | a, C 0 -> auxCompile a tempS
-                        | C 0, b -> auxCompile b tempS
-                        | C a', C b' -> (PUSH (a' + b')) :: tempS
-                        | a, b -> (auxCompile b tempS) @ (auxCompile a tempS) @ [ADD] 
-        | Sub (a, b) -> match a, b with 
-                        | a, C 0 -> auxCompile a tempS
-                        | C 0, b -> auxCompile (Minus b) tempS
-                        | C a', C b' -> (PUSH (a' - b')) :: tempS
-                        | a, b -> (auxCompile b tempS) @ (auxCompile a tempS) @ [SUB] 
-        | Minus (v) -> match v with 
-                        | C a' -> (PUSH (-a')) :: tempS
-                        | Minus e -> (auxCompile e tempS) @ tempS
-                        | a' -> (auxCompile a' tempS) @ [SIGN]
-        | Abs (v) -> match v with 
-                     | C a' -> (PUSH (abs a')) :: tempS
-                     | Minus a' -> auxCompile a' tempS @ [ABS]
-                     | Abs a' -> auxCompile a' tempS @ [ABS]
-                     | a' -> (auxCompile a' tempS) @ [ABS]
+        | Add (a, b) ->
+            match a, b with
+            | a, C 0 -> auxCompile a tempS
+            | C 0, b -> auxCompile b tempS
+            | C a', C b' -> (PUSH(a' + b')) :: tempS
+            | a, b ->
+                (auxCompile b tempS)
+                @ (auxCompile a tempS)
+                @ [ ADD ]
+        | Sub (a, b) ->
+            match a, b with
+            | a, C 0 -> auxCompile a tempS
+            | C 0, b -> auxCompile (Minus b) tempS
+            | C a', C b' -> (PUSH(a' - b')) :: tempS
+            | a, b ->
+                (auxCompile b tempS)
+                @ (auxCompile a tempS)
+                @ [ SUB ]
+        | Minus (v) ->
+            match v with
+            | C a' -> (PUSH(-a')) :: tempS
+            | Minus e -> (auxCompile e tempS) @ tempS
+            | a' -> (auxCompile a' tempS) @ [ SIGN ]
+        | Abs (v) ->
+            match v with
+            | C a' -> (PUSH(abs a')) :: tempS
+            | Minus a' -> auxCompile a' tempS @ [ ABS ]
+            | Abs a' -> auxCompile a' tempS @ [ ABS ]
+            | a' -> (auxCompile a' tempS) @ [ ABS ]
 
     auxCompile e []
 
@@ -201,3 +217,11 @@ compileOptimizedres
 exec compileOptimizedres
 
 exec (compileOptimized e3 1)
+
+
+// property testing
+
+let test exp =
+    (exec (compileOptimized exp 2)) = (sem exp 2)
+
+Check.Quick test
