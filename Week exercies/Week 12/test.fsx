@@ -86,3 +86,30 @@ and map f =
 map (fun x -> x) ta
 map (fun x -> x + " hej") ta
 map (fun x -> if x = "c" then "seeee" else x) ta
+
+
+type Path = int list
+
+let rec path t =
+    function
+    | [] -> false
+    | n :: ns -> (isPath t n) || (path t ns)
+
+and isPath is t =
+    match is with
+    | node when node = t -> true
+    | N (_, children) -> false || (path t children)
+
+isPath ta tb
+isPath ta td
+
+
+let rec path t =
+    function
+    | [] -> []
+    | n :: ns -> (get t n) :: (path t ns)
+
+and get is t =
+    match is with
+    | node when node = t -> node
+    | N (_, children) -> path t children

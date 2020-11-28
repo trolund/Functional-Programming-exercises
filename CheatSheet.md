@@ -15,7 +15,6 @@ type River = R of Name * Flow * Tributaries
 and Tributaries = River list
 ```
 
-
 ### Construct obj of type
 
 ```fs
@@ -52,7 +51,6 @@ First argument as three elements, then it takes three steps
 The running time of append is linear on the first argument.
 
 
-
 ## Recusrive
 
 ### Tail recusriver
@@ -81,3 +79,44 @@ The run-time disadvantage of a continuation-based declaration is even more clear
 
 
 ## `id`
+
+
+## Sequences Expressions
+
+En sekvens defineres:
+
+```fs
+seq { expr }
+```
+
+Eksempler:
+
+```fs
+(* Sequences *)
+let seq1 = seq { 1 .. 10 }
+
+(* ascending order and increment*)
+printfn "The Sequence: %A" seq1
+let seq2 = seq { 1 .. 5 .. 50 }
+
+(* descending order and decrement*)
+printfn "The Sequence: %A" seq2
+
+let seq3 = seq {50 .. -5 .. 0}
+printfn "The Sequence: %A" seq3
+
+(* using yield *)
+let seq4 = seq { for a in 1 .. 10 do yield a, a*a, a*a*a }
+printfn "The Sequence: %A" seq4
+```
+#### Resultater
+The Sequence: seq [1; 2; 3; 4; ...]
+The Sequence: seq [1; 6; 11; 16; ...]
+The Sequence: seq [50; 45; 40; 35; ...]
+The Sequence: seq [(1, 1, 1); (2, 4, 8); (3, 9, 27); (4, 16, 64); ...]
+
+
+## yield and yield! 
+
+yield = bruges til at tilføje enkelt element.
+yield! = bruges til at tilføje en liste a elementer.

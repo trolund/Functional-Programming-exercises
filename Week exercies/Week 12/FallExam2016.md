@@ -109,27 +109,27 @@ let seq2 = seq { for i in nat do
 
 ```
 
-##  1.Give the types of the sequencespos,seq1 and val1 and describe their values.
+##### 1.Give the types of the sequencespos,seq1 and val1 and describe their values.
 
-#### pos :
+###### pos :
  type: seq<int>
 
  Er en udenlig sekvens som starter fra 1 og dernæst stiger med 1 slåldes at sekvensen vil blive [1;2;3;4;5......]
 
 
-#### seq1 :
+###### seq1 :
  type: seq<int * int>
 
  starter med at tiføje tuple (0,0) dernæst bliver der for hver i tilføjet en tuple som indeholder (i, i) og lige efter en tuple som indeholder (-i, -i). 
 
 Det vil sige at den føste del af sekvensen vil være [(0,0); (1,1); (-1,-1) ... ]
 
-#### val1 : 
+###### val1 : 
 type: type: seq<int>
 
 vil indeholde de første 5 værdier af pos og vil derfor indeholde [1;2;3;4;5]
 
-# 2.Give the type of seq2 and describe the sequence. Furthermore, give the value of val2.
+##### 2.Give the type of seq2 and describe the sequence. Furthermore, give the value of val2.
 
 nat vil blot indeholde [0,1;2;3;4 ...] det vil sige de naturlige tal da Identity funktionen anvendes. 
 
@@ -148,7 +148,7 @@ Det vil sige at den første del af sekevensen vil være
 
 where a valueAais called anA leafand a valueBbis called aB-leaf.
 
-# 1. Give three values of type Tree<bool,int list>using the constructors A, B and Node.
+##### 1. Give three values of type Tree<bool,int list>using the constructors A, B and Node.
 
 ```fsharp
 let valueOne = Node( A "a", B "b" )
@@ -156,7 +156,7 @@ let valueTwo = Node(Node(A "a", B "b"), A "a")
 let valuethree = Node(Node(A "a", Node(A "a", B "b" ) ), A "a")
 ```
 
-# 2.Declare a function that counts the number of occurrences of A-leaves in a tree.
+##### 2. Declare a function that counts the number of occurrences of A-leaves in a tree.
 
 ```fsharp
 let countA tree =
@@ -170,7 +170,7 @@ let countA tree =
     loop tree 0
 ```
 
-# 3.Declare a function
+##### 3.Declare a function
 
 todo mangler.....
 
@@ -182,9 +182,9 @@ let subst = function
 
 ```
 
-# Problem 5 (30%)
+## Problem 5 (30%)
 
-## 1.Declare a functiontoListtwhich returns a list of all the values occurring in the nodesof the treet. The order in which values occur in the list is of no significance.
+##### 1.Declare a functiontoListtwhich returns a list of all the values occurring in the nodesof the treet. The order in which values occur in the list is of no significance.
 
 ```fsharp
 type T<'a> = N of 'a * T<'a> list
@@ -214,7 +214,7 @@ val it : string list = ["a"; "b"; "c"; "c"; "d"; "e"; "g"; "f"]
 *)
 ```
 
-## 2.Declare a function map f t, which returns the tree obtained from thet by applying the function f to the values occurring in the nodes of t. Give the type of map.
+##### 2.Declare a function map f t, which returns the tree obtained from thet by applying the function f to the values occurring in the nodes of t. Give the type of map.
 
 ```fsharp
 let map f t =
@@ -281,6 +281,34 @@ val it : T<string> =
 *)
 ```
 
+##### 3.Declare a functionisPathistthat checks whetherisis a path int.
+
+```fsharp
+type Path = int list
+
+let rec path t =
+    function
+    | [] -> false
+    | n :: ns -> (isPath t n) || (path t ns)
+
+and isPath is t =
+    match is with
+    | node when node = t -> true
+    | N (_, children) -> false || (path t children)
+
+isPath ta tb // true
+isPath ta td // false
+```
+
 ```fsharp
 
+
+
 ```
+
+
+##### 4.Declare a functionget: Path→T<’a>→T<’a>. The value ofgetistis the subtree identified by is in t.
+
+
+
+##### 5.Declare a functiontryFindPathto:’a→T<’a>→Path option. Whenvoccurs insome node oft, then the value oftryFindPathtov tisSomepath, wherevoccurs in thenode oftidentified bypath. The value oftryFindPathtov tisNonewhenvdoes notoccur in a node oft. There is no restriction concerning which path the function shouldreturn whenvoccurs more than once int.
