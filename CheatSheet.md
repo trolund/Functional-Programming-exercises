@@ -62,7 +62,6 @@ Mest effektive er akkumerlerede parameter.
 
 Dette kan man ikke altid, så kan man bruge continoues based, det står på side
 
-
 ## Give an evaluation
 See page 211
 

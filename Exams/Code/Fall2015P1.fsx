@@ -14,8 +14,6 @@ let ats2 =
       ad2
       ("Unknown", -10) ]
 
-
-
 let rec inv =
     function
     | [] -> true
