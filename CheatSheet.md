@@ -1,5 +1,6 @@
 # Cheat sheet for F#
 
+`<>` er det samme som `!=` 
 
 ## Types
 

@@ -300,9 +300,6 @@ isPath ta tb // true
 isPath ta td // false
 ```
 
-
-
-
 ##### 4.Declare a functionget: Path→T<’a>→T<’a>. The value ofgetistis the subtree identified by is in t.
 
 ```fsharp
@@ -316,4 +313,9 @@ and get path =
     | N (name, children) -> N(name, getChildren (path, children))
 ```
 
-##### 5.Declare a functiontryFindPathto:’a→T<’a>→Path option. Whenvoccurs insome node oft, then the value oftryFindPathtov tisSomepath, wherevoccurs in thenode oftidentified bypath. The value oftryFindPathtov tisNonewhenvdoes notoccur in a node oft. There is no restriction concerning which path the function shouldreturn whenvoccurs more than once int.
+##### 5.Declare a functiontryFindPathto: ’a → T<’a> → Path option. When v occurs in some node of t, then the value of tryFindPathto v t is Some path, where voccurs in the node of t identified by path. The value of tryFindPath to v t is None when v does not occur in a node of t. There is no restriction concerning which path the function should return when v occurs more than once int.
+
+```fsharp
+
+
+```
