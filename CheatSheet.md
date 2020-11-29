@@ -50,6 +50,9 @@ First argument as three elements, then it takes three steps
 
 The running time of append is linear on the first argument.
 
+# Functions
+
+Så fremt `Function` keywordet bliver brugt og functionen tager mod mere end et argument vil disse skulle gangives som en `tuple`.
 
 ## Recusrive
 

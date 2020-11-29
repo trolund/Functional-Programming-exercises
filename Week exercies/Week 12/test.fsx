@@ -103,13 +103,23 @@ and isPath is t =
 isPath ta tb
 isPath ta td
 
+let tc = N("c", [ N("d", []); N("e", [ td ]) ])
 
-let rec path t =
+
+let path =
+    [ 1
+      1
+      0 ] // path to ta in td
+
+// iterate over to lists
+let rec getChildren =
     function
-    | [] -> []
-    | n :: ns -> (get t n) :: (path t ns)
+    | [], children -> children
+    | head :: tail, children -> [ get tail (List.item head children) ]
 
-and get is t =
-    match is with
-    | node when node = t -> node
-    | N (_, children) -> path t children
+and get (path: Path) =
+    function
+    | N (name, children) -> N(name, getChildren path children)
+
+
+get path td

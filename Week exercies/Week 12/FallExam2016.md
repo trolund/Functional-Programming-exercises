@@ -300,15 +300,20 @@ isPath ta tb // true
 isPath ta td // false
 ```
 
-```fsharp
 
-
-
-```
 
 
 ##### 4.Declare a functionget: Path→T<’a>→T<’a>. The value ofgetistis the subtree identified by is in t.
 
+```fsharp
+let rec getChildren =
+    function
+    | [], children -> children
+    | head :: tail, children -> [ get tail (List.item head children) ]
 
+and get path =
+    function
+    | N (name, children) -> N(name, getChildren (path, children))
+```
 
 ##### 5.Declare a functiontryFindPathto:’a→T<’a>→Path option. Whenvoccurs insome node oft, then the value oftryFindPathtov tisSomepath, wherevoccurs in thenode oftidentified bypath. The value oftryFindPathtov tisNonewhenvdoes notoccur in a node oft. There is no restriction concerning which path the function shouldreturn whenvoccurs more than once int.
