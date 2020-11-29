@@ -57,3 +57,20 @@ let f1 m n k =
     }
 
 List.ofSeq (f1 2 2 3)
+
+
+let f2 f p sq =
+    seq {
+        for x in sq do
+            if p x then yield f x
+    }
+
+let f2Seq f p sq =
+    Seq.takeWhile (fun x -> p x) sq
+    |> Seq.map (fun y -> f y)
+
+let f x = x + 1
+let p y = y > 2
+let testSeq exp = f2Seq f p exp = f2 f p exp
+
+Check.Quick testcon
