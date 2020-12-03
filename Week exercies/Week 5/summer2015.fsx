@@ -18,15 +18,15 @@ type Elective = CourseNo -> bool
 type FlagModel = BasicNaturalScience * TechnologicalCore * ProjectProfessionalSkill * Elective
 type CoursePlan = Set<CourseNo>
 
-(* 
+(*
     1. Declare a function isValidCourseDesc: CourseDesc -> bool,
-    where isValidCourseDesc desc is true if the ECTS part of desc is valid 
+    where isValidCourseDesc desc is true if the ECTS part of desc is valid
 *)
 
 let fp = ("Functional Programming", 5)
 let sp = ("Strange Programming", 7)
 
-let isValidCourseDesc (courseDesc: CourseDesc) = 
+let isValidCourseDesc (courseDesc: CourseDesc) =
     let (_, ects) = courseDesc
     let valid = ects % 5 = 0
     valid
@@ -34,8 +34,13 @@ let isValidCourseDesc (courseDesc: CourseDesc) =
 isValidCourseDesc fp
 isValidCourseDesc sp
 
-let validCourseBase: CourseBase = Map.ofList [02157, fp; 02158, ("An other course", 5)]
-let invalidCourseBase: CourseBase = Map.ofList [02157, fp; 02158, ("An other course", 7)]
+let validCourseBase: CourseBase =
+    Map.ofList [ 02157, fp
+                 02158, ("An other course", 5) ]
+
+let invalidCourseBase: CourseBase =
+    Map.ofList [ 02157, fp
+                 02158, ("An other course", 7) ]
 
 (*
     2. Declare a function isValidCourseBase: CourseBase -> bool,
@@ -43,8 +48,8 @@ let invalidCourseBase: CourseBase = Map.ofList [02157, fp; 02158, ("An other cou
     base cb is valid, that is, it satisfies the predicate isValidCourseDesc.
 *)
 
-let isValidCourseBase (courseBase: CourseBase) = 
-    Map.forall(fun _ desc -> isValidCourseDesc desc) courseBase
+let isValidCourseBase (courseBase: CourseBase) =
+    Map.forall (fun _ desc -> isValidCourseDesc desc) courseBase
 
 isValidCourseBase validCourseBase
 isValidCourseBase invalidCourseBase
@@ -54,10 +59,10 @@ isValidCourseBase invalidCourseBase
     is true if the two sets s1 and s2 have no common element, that is, they are disjoint.
 *)
 
-let op: Optional = Set.ofList [02157; 02158]
-let ma: Mandatory = Set.ofList [02141; 02131]
+let op: Optional = Set.ofList [ 02157; 02158 ]
+let ma: Mandatory = Set.ofList [ 02141; 02131 ]
 
-let disjoint s1 s2 = 
+let disjoint s1 s2 =
     let count = (Set.count s1) + (Set.count s2)
     let accCount = (Set.union s1 s2).Count
     count = accCount
@@ -66,21 +71,25 @@ disjoint op ma
 disjoint op op
 disjoint ma ma
 
-(* 
+(*
     4. Declare a function sumECTS: Set<CourseNo> -> CourseBase -> int,
     where sumECTS cs cb is the sum of all ECTS points of the courses with numbers in cs,
     where the ECTS points are extracted from course descriptions in the course base cb.
 *)
 
-let courseNos = Set.ofList [02157; 02131]
-let courseNos1 = Set.ofList [02157; 02158]
-let courseBase: CourseBase = Map.ofList [02157, ("Functional Programming", 5); 02131, ("Embedded Systems", 10); 02141, ("Computer Science Modelling", 10); 02158, ("Parallel programming", 5)]
+let courseNos = Set.ofList [ 02157; 02131 ]
+let courseNos1 = Set.ofList [ 02157; 02158 ]
 
-let sumECTS (cs: Set<CourseNo>, cb: CourseBase) = 
-    Map.fold (fun acc no desc -> 
-                let (_, ects) = desc
-                if cs.Contains no then ects + acc else acc
-                ) 0 cb
+let courseBase: CourseBase =
+    Map.ofList [ 02157, ("Functional Programming", 5)
+                 02131, ("Embedded Systems", 10)
+                 02141, ("Computer Science Modelling", 10)
+                 02158, ("Parallel programming", 5) ]
+
+let sumECTS (cs: Set<CourseNo>, cb: CourseBase) =
+    Map.fold (fun acc no desc ->
+        let (_, ects) = desc
+        if cs.Contains no then ects + acc else acc) 0 cb
 
 sumECTS (courseNos, courseBase)
 sumECTS (courseNos1, courseBase)
@@ -107,10 +116,12 @@ let isValidCourseGroup (cg: CourseGroup, cb: CourseBase) =
     let res = disjoint man opt
     let optSum = sumECTS (opt, cb)
     let manSum = sumECTS (man, cb)
-    let mandatoryECTSpoints = manSum <= 45 
+    let mandatoryECTSpoints = manSum <= 45
     let totalSum = manSum + optSum
-    let manTotalrule = opt.IsEmpty && manSum >= 45 && totalSum >= 45
-    
+
+    let manTotalrule =
+        opt.IsEmpty && manSum >= 45 && totalSum >= 45
+
     res && mandatoryECTSpoints && manTotalrule
 
 (*
@@ -123,20 +134,23 @@ let isValidCourseGroup (cg: CourseGroup, cb: CourseBase) =
     the elective courses.
 *)
 
-let ep = function
-    | 02157 | 02158 -> true
+let ep =
+    function
+    | 02157
+    | 02158 -> true
     | _ -> false
 
 ep 02157
 ep 02154
 
 
-let isValid fm cb = 
+let isValid fm cb =
     let (basicNaturalScience, technologicalCore, projectProfessionalSkill, elective) = fm
-    let allGroupsValid = isValidCourseGroup basicNaturalScience 
-                      && isValidCourseGroup technologicalCore 
-                      && isValidCourseGroup projectProfessionalSkill 
-                      && isValidCourseGroup elective
-    
-    
 
+    let allGroupsValid =
+        isValidCourseGroup basicNaturalScience
+        && isValidCourseGroup technologicalCore
+        && isValidCourseGroup projectProfessionalSkill
+        && isValidCourseGroup elective
+
+    allGroupsValid
