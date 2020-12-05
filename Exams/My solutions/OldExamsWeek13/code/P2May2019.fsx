@@ -78,3 +78,52 @@ let longestDuration (al: AssemblyLine, treg: TaskReg) =
         if dur > max then dur else max) 0 al
 
 longestDuration (al1, treg1)
+
+
+let partCostAL (preg: PartReg) al =
+
+    let rec partlist acc =
+        function
+        | [] -> acc
+        | (name, amount) :: tail ->
+            let cost = Map.find name preg
+            partlist (acc + (cost * amount)) tail
+
+    let rec loop acc =
+        function
+        | [] -> acc
+        | (name, plist) :: tail -> loop (acc + partlist 0 plist) tail
+
+    loop 0 al
+
+partCostAL preg1 al1
+
+
+let prodDurCost (treg: TaskReg) (al: AssemblyLine) =
+
+    List.fold (fun acc ws ->
+        let (name, partlist) = ws
+        let (dur, cost) = Map.find name treg
+        let (da, ca) = acc
+        (da + dur, ca + cost)) (0, 0) al
+
+prodDurCost treg1 al1
+
+// alternativ
+
+let prodDurCostA (treg: TaskReg) (al: AssemblyLine) =
+
+    List.fold (fun (da, ca) (name, _) ->
+        let (dur, cost) = Map.find name treg
+        (da + dur, ca + cost)) (0, 0) al
+
+
+let toStock al =
+    let rec aux acc =
+        function
+        | [] -> acc
+        | (name, partlist) :: tail -> aux (acc @ partlist) tail
+
+    Map.ofList (aux [] al)
+
+toStock al1
