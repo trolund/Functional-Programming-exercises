@@ -96,6 +96,7 @@ let mainSource r =
         function
         | R (name, flow, tri) -> (name, flow) :: (subSource tri)
 
+    // sorting
     let folder acc elem =
         let (_, aFlow) = acc
         let (_, cFlow) = elem
@@ -137,11 +138,12 @@ and tryInsertTriInList n t =
         | Some r' -> Some(r' :: ts)
 
 let tri = R("R5", 2, [])
-tryInsert "R3" tri rev
 
+tryInsert "R3" tri rev
 (*
     7. Discuss briefly possible limitations of the above tree-based model of rivers.
 
-    Svar: 
+    Svar:
     modelen viser ikke noget om fx. længden af forbindelser eller pladsering af disse forbindelser i forhold til hinaden
 *)
+

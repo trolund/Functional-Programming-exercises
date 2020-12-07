@@ -113,3 +113,73 @@ let newtree2 =
     insertChildOf "Frede" (P("Martin", M, 1820, [])) myTree
 
 isWF (unpackOption newtree2)
+
+
+let rec find n =
+    function
+    | P (name, s, yofb, cs) when n = name -> [ (name, s, yofb, getChildrenInfo cs) ]
+    | P (_, _, _, cs) -> findinlist n cs
+
+and findinlist n cs =
+    match cs with
+    | [] -> []
+    | head :: tail -> find n head @ findinlist n tail
+
+and getChildrenInfo =
+    function
+    | [] -> []
+    | head :: tail ->
+        let (P (name, s, yofb, cs)) = head
+        (name, s, yofb) :: getChildrenInfo tail
+
+find "Mor" myTree
+
+
+let rec toString (n: int) (t: FamilyTree) =
+    match t with
+    | P (name, s, yofb, cs) ->
+        name
+        + " "
+        + (sexToString s)
+        + " "
+        + string (yofb)
+        + "\n"
+        + toStringList (n + n) cs
+    | _ -> failwith "Er ikke et rigtigt stamtræ"
+
+and toStringList n =
+    function
+    | [] -> ""
+    | head :: list ->
+        space n
+        + toString n head
+        + (toStringList (n) list)
+
+and sexToString =
+    function
+    | M -> "Male"
+    | F -> "Female"
+
+and space n =
+
+    let rec loop acc n =
+        match n with
+        | 0 -> acc
+        | _ -> loop (acc + " ") (n - 2)
+
+    loop "" n
+
+printf "%s" (toString 6 myTree)
+
+
+let rec truncate =
+    function
+    | P (name, s, yofb, cs) when s = F -> P(name, s, yofb, [])
+    | P (name, s, yofb, cs) -> P(name, s, yofb, truncateList cs)
+
+and truncateList =
+    function
+    | [] -> []
+    | head :: tail -> truncate head :: truncateList tail
+
+printf "%s" (toString 6 (truncate myTree))
