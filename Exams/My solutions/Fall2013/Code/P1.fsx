@@ -58,6 +58,11 @@ let mapData =
                  ("b", 2)
                  ("d", 4) ]
 
+let mapData2 =
+    Map.ofList [ ("a", 5)
+                 ("b", 6)
+                 ("c", 7) ]
+
 
 let insertMap e n ms =
     match Map.tryFind e ms with
@@ -65,3 +70,8 @@ let insertMap e n ms =
     | None -> Map.add e n ms
 
 insertMap "a" 2 mapData
+
+let unionMap ms1 ms2 =
+    Map.fold (fun acc key value -> insertMap key value acc) ms1 ms2
+
+unionMap mapData mapData2
