@@ -1,0 +1,1 @@
+Denne uge blev der lavet en række eksamensopgaver disse er lavet og ligger i mappen "Exsams/OldExamsWeek13".

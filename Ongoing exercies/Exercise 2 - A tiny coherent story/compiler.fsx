@@ -149,6 +149,7 @@ let rec sem e x =
 sem e1 2
 sem e3 2
 sem e3 -120
+sem e12 2
 
 // compile: Exp -> int -> Instruction list
 

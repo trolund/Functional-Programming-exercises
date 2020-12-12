@@ -1,0 +1,1 @@
+Denne uge blev eksamenssæt fall 2016 lavet som ligger i "Exsams" mappen.
