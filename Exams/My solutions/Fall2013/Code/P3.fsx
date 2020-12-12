@@ -73,41 +73,43 @@ let rec overview =
 
 overview booki
 
+let rec depthElem =
+    function
+    | Par (_) -> 0
+    | Sub (_, elist) ->
+        1
+        + List.fold max 0 (List.fold (fun acc x -> depthElem x :: acc) [] elist)
 
-// let rec depthSection (x: Section) =
-//     match x with
-//     | (titel, elist) -> 1 + List.fold max 0 (depthElemList elist)
+let rec depthSection =
+    function
+    | (_, elist) ->
+        1
+        + List.fold max 0 (List.fold (fun acc x -> depthElem x :: acc) [] elist)
 
-// and depthElemList =
-//     function
-//     | [] -> []
-//     | head :: tail -> depthElem head :: depthElemList tail
+let depthChapter =
+    function
+    | (_, slist) ->
+        1
+        + List.fold max 0 (List.fold (fun acc x -> depthSection x :: acc) [] slist)
 
-// and depthElem =
-//     function
-//     | Par (t) -> 0
-//     | Sub (s) -> 1 + depthSection s
+let depthBook b =
+    List.fold max 0 (List.fold (fun acc x -> depthChapter x :: acc) [] b)
 
-// and depthChapter (x: Chapter list) =
-//     match x with
-//     | [] -> []
-//     | (titel, sections) :: tail -> depthSectionList sections @ depthChapter tail
 
-// and depthSectionList =
-//     function
-//     | [] -> []
-//     | head :: tail -> depthSection head :: depthSectionList tail
+depthBook booki
 
-// and depthBook book = List.fold max 0 (depthChapter book)
+let testData =
+    ("test",
+     [ Par "bla"
+       Sub(("Why programming", [ Par "Bla."; Sub(("Section", [])) ])) ])
 
-// depthBook booki
+let testData2 =
+    ("test",
+     [ Par "bla"
+       Sub(("Why programming", [ Par "Bla." ])) ])
 
-// let rec depthSection = function TODO
-//     | [] -> 0
-//     | (_, elist) ->
-// and elementList = function
-//     | Par(_) ->
-//     | Sub(_, s) ->
+depthSection testData
+depthSection testData2
 
 let tocB b =
 
