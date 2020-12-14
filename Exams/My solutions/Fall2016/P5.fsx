@@ -79,8 +79,10 @@ get [ 1; 1; 0 ] ta
 
 // 5.
 
-let rec tryFindPathTo v (N (v', ts)) =
-    if v = v' then Some [] else tryFindInList 0 v ts
+
+let rec tryFindPathTo v =
+    function
+    | N (v', ts) -> if v = v' then Some [] else tryFindInList 0 v ts
 
 and tryFindInList i v =
     function
@@ -90,3 +92,6 @@ and tryFindInList i v =
         match tryFindInList 0 v ts' with
         | None -> tryFindInList (i + 1) v ts
         | Some is -> Some(i :: is)
+
+
+tryFindPathTo "g" ta
