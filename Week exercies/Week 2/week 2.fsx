@@ -1,4 +1,4 @@
-// Week 2 alternativ løsning 
+// Week 2 alternativ løsning
 
 // 2.1
 
@@ -23,3 +23,21 @@ let rec pow2 (s, n) =
 
 pow ("hej", 3)
 pow2 ("hej", 3)
+
+
+// 2.3
+
+let isIthChar (s, n, c) =
+    let e = String.length s
+
+    let rec aux i =
+        match i with
+        | x when e = x -> false
+        | x ->
+            match Seq.item i s with
+            | v when x = n && v = c -> true
+            | _ -> aux (i + 1)
+
+    aux 0
+
+isIthChar ("hej", 1, 'e')

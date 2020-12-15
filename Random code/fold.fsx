@@ -20,4 +20,15 @@ let initState = 0
 
 List.fold folder initState testList
 
-List.foldBack folder testList initState
+let folderback value state =
+    if value % 2 = 0 then
+        printf "%i \n" (value)
+        state + value
+    else
+        printf "%i \n" value
+        state
+
+List.foldBack folderback testList initState
+
+List.fold2 (fun acc x y -> (x + y) :: acc) [] [ 1; 2; 3; 4; 5 ] [ 1; 2; 3; 4; 5 ]
+List.foldBack2 (fun x y acc -> (x + y) :: acc) [ 1; 2; 3; 4; 5 ] [ 1; 2; 3; 4; 5 ] []

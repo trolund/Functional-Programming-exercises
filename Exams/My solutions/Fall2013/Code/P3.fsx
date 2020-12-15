@@ -60,7 +60,13 @@ let maxL l =
 
 maxL []
 
+
 maxL [ 0; 4; 6; 10 ]
+
+let maxLR l = List.reduce max l
+
+maxLR [ 0; 4; 6; 10 ]
+
 
 // 2
 
@@ -73,30 +79,50 @@ let rec overview =
 
 overview booki
 
-let rec depthElem =
-    function
-    | Par (_) -> 0
-    | Sub (_, elist) ->
-        1
-        + List.fold max 0 (List.fold (fun acc x -> depthElem x :: acc) [] elist)
+// let rec depthElem =
+//     function
+//     | Par (_) -> 0
+//     | Sub (_, elist) ->
+//         1
+//         + List.fold max 0 (List.fold (fun acc x -> depthElem x :: acc) [] elist)
 
-let rec depthSection =
-    function
-    | (_, elist) ->
-        1
-        + List.fold max 0 (List.fold (fun acc x -> depthElem x :: acc) [] elist)
+// let rec depthSection =
+//     function
+//     | (_, elist) ->
+//         1
+//         + List.fold max 0 (List.fold (fun acc x -> depthElem x :: acc) [] elist)
 
-let depthChapter =
+// let depthChapter =
+//     function
+//     | (_, slist) ->
+//         1
+//         + List.fold max 0 (List.fold (fun acc x -> depthSection x :: acc) [] slist)
+
+// let depthBook b =
+//     List.fold max 0 (List.fold (fun acc x -> depthChapter x :: acc) [] b)
+
+
+// depthBook booki
+
+// Thyge
+
+let rec depthSection (_, el) =
+    maxL (List.fold (fun s e -> (depthElem e) :: s) [] el)
+
+and depthElem =
     function
-    | (_, slist) ->
-        1
-        + List.fold max 0 (List.fold (fun acc x -> depthSection x :: acc) [] slist)
+    | Par (_) -> 1
+    | Sub (s) -> 1 + depthSection s
+
+let depthChapter (_, sl) =
+    1
+    + maxL (List.fold (fun st sec -> (depthSection sec) :: st) [] sl)
 
 let depthBook b =
-    List.fold max 0 (List.fold (fun acc x -> depthChapter x :: acc) [] b)
-
+    maxL (List.fold (fun s c -> depthChapter c :: s) [] b)
 
 depthBook booki
+
 
 let testData =
     ("test",
@@ -108,8 +134,8 @@ let testData2 =
      [ Par "bla"
        Sub(("Why programming", [ Par "Bla." ])) ])
 
-depthSection testData
-depthSection testData2
+// depthSection testData
+// depthSection testData2
 
 let tocB b =
 
