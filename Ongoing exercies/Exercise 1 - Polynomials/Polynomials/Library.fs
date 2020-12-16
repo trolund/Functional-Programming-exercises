@@ -137,15 +137,23 @@ module Polynomials =
 
         aux (prune poly) 0
 
-    (*
-    TODO
-    The function compose: Poly -> Poly -> Poly
-    *)
 
-    // let rec compose (p1:Poly) (p2: Poly) =
-    //     match p1, p2 with
-    //     | [], y::ytail -> y
-    //     | x::xtail, y::ytail -> x * y + compose xtail ytail
+    let compose a b =
+
+        let rec ppow p n =
+            match (p, n) with
+            | (_, -1) -> p
+            | (_, 0) -> p
+            | (p, n) -> mul p (p_pow p (n - 1))
+
+        let rec composerec a b n =
+            match a with
+            | head :: tail when n = 0 -> head :: (compose_rec tail b (n + 1)).[1..]
+            | head :: tail -> add (mulC head (ppow b (n - 1))) (compose_rec tail b (n + 1))
+            | [ last ] -> ppow (mulC last b) n
+            | [] -> []
+
+        composerec a b 0
 
     let deg =
         function

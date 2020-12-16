@@ -94,9 +94,16 @@ module Part1 =
     Check.Quick test
 
 
-(*
+    (*
     5.  Declare a typeFinitehavingnvalues.
     Choosensmall; but be aware that it shouldbe meaningful to letFsCheck.Check.Quickgenerate 100 random assignments.
 *)
 
-// type Finite = [1;2;3;4]
+    type Finite =
+        | S of string
+        | I of int
+
+(*
+    6. Use property-based testing to validate that p is equivalent to toNnf p, where p :
+    Prop<Finite>.
+*)

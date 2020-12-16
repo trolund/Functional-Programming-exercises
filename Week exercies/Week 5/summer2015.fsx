@@ -144,7 +144,7 @@ ep 02157
 ep 02154
 
 
-let isValid fm cb =
+let isValid fm =
     let (basicNaturalScience, technologicalCore, projectProfessionalSkill, elective) = fm
 
     let allGroupsValid =
