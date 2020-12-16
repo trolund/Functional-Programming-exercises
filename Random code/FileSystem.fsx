@@ -57,9 +57,9 @@ and longNamesElement =
     | File (name, ext) -> [ name + "." + ext ]
     | Dir (name, sub) ->
         printfn "%A" (longNamesFileSys sub)
-        List.foldBack (prependDirectory name) (longNamesFileSys sub) []
+        List.foldBack (appendDirectory name) (longNamesFileSys sub) []
 
-and prependDirectory =
+and appendDirectory =
     fun dir name dSet -> dSet @ [ dir + "/" + name ]
 
 longNamesElement d1
